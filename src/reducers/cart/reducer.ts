@@ -1,3 +1,4 @@
+import { produce } from 'immer'
 import { OrderInfo } from "../../pages/Cart"
 import { ActionTypes } from "./actions"
 
@@ -20,21 +21,44 @@ export function CartReducer(state: CartState, action: any)  {
     
     switch (action.type ) {
       case ActionTypes.ADD_ITEM:
-        return  {
-          ...state,
-          cart: [... state.cart, action.payload.item]
-        }
+        // return  {
+        //   ...state,
+        //   cart: [... state.cart, action.payload.item]
+        // }
+        return produce(state, (draft)=> {
+          const itemAlreadyAdded = draft.cart.find(
+            (item) => item.id === action.payload.item.id,
+          )
+
+          if(itemAlreadyAdded) {
+            itemAlreadyAdded.quantity += action.payload.item.quantity
+          } else {
+            draft.cart.push(action.payload.item)
+          }
+        })
+      case ActionTypes.REMOVE_ITEM:
+        return {... state}
       case ActionTypes.INCREMENT_ITEM_QUANTITY:
         return {
           ...state,
         }
       case ActionTypes.DECREMENT_ITEM_QUANTITY:
         return {... state}
-      case ActionTypes.REMOVE_ITEM:
-        return {... state}
+      
       case ActionTypes.CHECKOUT_CART: 
-        action.payload.callback(`/order/${action.payload.newOrder.id}/success`)
-        return state
+        // action.payload.callback(`/order/${action.payload.order.id}/success`)
+        // return {...state}
+        return produce(state, (draft)=> {
+          const newOrder:Order = {
+                id: new Date().getTime(),
+                items: state.cart,
+                ...action.payload.order,
+            }
+                draft.orders.push(newOrder),
+                draft.cart = []
+
+                action.payload.callback(`/order/${newOrder.id}/success`)
+        })
       default:
         return state
     }

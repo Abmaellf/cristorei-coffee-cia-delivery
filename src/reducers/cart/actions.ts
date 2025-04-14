@@ -1,5 +1,6 @@
 import { NavigateFunction } from "react-router-dom";
 import { Item, Order } from "./reducer";
+import { OrderInfo } from "../../pages/Cart";
 
 export enum ActionTypes {
   ADD_ITEM = 'ADD_ITEM',
@@ -46,12 +47,11 @@ export function decrementItemQuantityAction(itemId: Item['id']) {
         }
 }
 
-export function checkoutCartAction(callback: NavigateFunction, newOrder: Order) {
+export function checkoutCartAction(callback: NavigateFunction, order: OrderInfo) {
   return {
             type: ActionTypes.CHECKOUT_CART,
             payload: {
-              // orders,
-             newOrder,
+              order,
               callback
             }
         }

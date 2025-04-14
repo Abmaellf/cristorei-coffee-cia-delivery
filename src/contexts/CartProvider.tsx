@@ -82,15 +82,8 @@ export function CartContextProvider({children}: CartContextProviderProps) {
     }
    
     function checkout(order: OrderInfo ) {
-      const newOrder: Order = {
-        id: new Date().getTime(),
-        items: cartState.cart,
-        ...order,
-      }
       
-      orders.push(newOrder),
-      cartState.cart = []
-      dispatch(checkoutCartAction(callback, newOrder))
+      dispatch(checkoutCartAction(callback, order))
     }
      
     return(
