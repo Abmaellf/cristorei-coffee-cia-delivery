@@ -49,36 +49,15 @@ export function CartContextProvider({children}: CartContextProviderProps) {
 
      
     function removeItem(itemId: Item['id']) {
-        const itemToRemoveId = cart.findIndex(
-            (item) => item.id === itemId,
-        )
-        cart.splice(itemToRemoveId, 1)   
-
         dispatch(removeItemAction(itemId))
     }
 
-    function incrementItemQuantity(itemId: string) {
-        const itemToIncrement = cart.find(
-            (item) => item.id === itemId,
-          )
-  
-          if (itemToIncrement?.id) {
-            itemToIncrement.quantity += 1
-          }
-
-          dispatch(incrementItemQuantityAction(itemToIncrement.id))
+    function incrementItemQuantity(itemId: Item['id']) {
+          dispatch(incrementItemQuantityAction(itemId))
     }
 
-    function decrementItemQuantity(itemId: string) {
-        const itemToInDecrement = cart.find(
-            (item) => item.id === itemId,
-          )
-  
-          if (itemToInDecrement?.id && itemToInDecrement.quantity > 1) {
-            itemToInDecrement.quantity -= 1
-          }
-
-          dispatch(decrementItemQuantityAction(itemToInDecrement.id))
+    function decrementItemQuantity(itemId: Item['id']) {
+          dispatch(decrementItemQuantityAction(itemId))
     }
    
     function checkout(order: OrderInfo ) {
