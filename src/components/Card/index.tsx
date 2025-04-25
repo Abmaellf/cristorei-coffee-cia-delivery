@@ -1,7 +1,7 @@
 import { useTheme } from "styled-components";
 import { CoffeeImg, Container, Control, Description, Order, Price, Tags, Title } from "./styles";
 import { CheckFat, ShoppingCart } from '@phosphor-icons/react'
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { QuantityInput } from "../Form/QuantityInput";
 import { CartContext } from "../../contexts/CartProvider";
 
@@ -41,6 +41,16 @@ export function Card({ coffee }: Props) {
         setQuantity(1)
     }
     
+    useEffect(()=> {
+        let timeout: number
+
+        if(isItemAdded) {
+            timeout = setTimeout(() => {
+                setisItemAdded(false)
+            }, 1000) 
+        }
+
+    }, [isItemAdded] )
         
     return(
         <Container>
